@@ -4,7 +4,7 @@ param (
     [string]$overwrite
 )
 
-Write-Verbose 'Entering sample.ps1'
+Write-Verbose 'Entering zip.ps1'
 Write-Verbose "pathToZipFolder = $pathToZipFolder"
 Write-Verbose "pathToZipFile = $pathToZipFile"
 Write-Verbose "overwrite = $overwrite"
@@ -22,5 +22,9 @@ if ($overwrite -and (Test-Path $pathToZipFile)){
     Write-Verbose "Removing the old file"
     Remove-Item $pathToZipFile
 }
+
+$destinationFolder = split-path $pathToZipFile -Parent
+Write-Verbose "destinationFolder = $destinationFolder"
+New-Item -ItemType Directory -Force -Path $destinationFolder
 
 [IO.Compression.ZipFile]::CreateFromDirectory($pathToZipFolder, $pathToZipFile)
